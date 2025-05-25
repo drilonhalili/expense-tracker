@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react"
-import './App.css'
-
+import "./App.css"
 import {
   Card,
   CardContent,
@@ -8,27 +6,25 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card"
-
 import { api } from "@/lib/api"
+import { useQuery } from "@tanstack/react-query"
+
+async function getTotalSpent() {
+  const res = await api.expenses["total-spent"].$get()
+  if (!res.ok) {
+    throw new Error("Network response was not ok")
+  }
+  const data = await res.json()
+  return data
+}
 
 function App() {
-  const [totalSpent, setTotalSpent] = useState(0)
+  const { isPending, error, data } = useQuery({
+    queryKey: ["get-total-spent"],
+    queryFn: getTotalSpent
+  })
 
-  useEffect(() => {
-    const fetchTotalSpent = async () => {
-      try {
-        const response = await api.expenses["total-spent"].$get()
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        setTotalSpent(data.total)
-      } catch (error) {
-        console.error('Error fetching total spent:', error)
-      }
-    }
-    fetchTotalSpent()
-  }, [])
+  if (error) return "An error has occurred: " + error.message
 
   return (
     <Card className="w-[350px] m-auto mt-10">
@@ -36,7 +32,7 @@ function App() {
         <CardTitle>Total spent</CardTitle>
         <CardDescription>The total amount you've spent</CardDescription>
       </CardHeader>
-      <CardContent>{totalSpent}</CardContent>
+      <CardContent>{isPending ? "..." : data.total}</CardContent>
     </Card>
   )
 }
