@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
 import { api } from "@/lib/api"
+import { createExpenseSchema } from "../../../../server/sharedTypes"
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
   component: Expenses
@@ -44,18 +45,27 @@ function Expenses() {
 
   return (
     <div className="p-2">
-      <h2>Create expense</h2>
+      <h2 className="mb-4">Create expense</h2>
       <form
         onSubmit={e => {
           e.preventDefault()
           e.stopPropagation()
           form.handleSubmit()
         }}
+        className="flex flex-col gap-2"
       >
         <form.Field
           name="title"
+          validators={{
+            onChange: ({ value }) => {
+              const result = createExpenseSchema.shape.title.safeParse(value)
+              return result.success
+                ? undefined
+                : result.error.errors.map(e => e.message).join(", ")
+            }
+          }}
           children={field => (
-            <>
+            <div>
               <Label htmlFor={field.name}>Title</Label>
               <Input
                 id={field.name}
@@ -65,14 +75,22 @@ function Expenses() {
                 onChange={e => field.handleChange(e.target.value)}
               />
               <FieldInfo field={field} />
-            </>
+            </div>
           )}
         />
 
         <form.Field
           name="amount"
+          validators={{
+            onChange: ({ value }) => {
+              const result = createExpenseSchema.shape.amount.safeParse(value)
+              return result.success
+                ? undefined
+                : result.error.errors.map(e => e.message).join(", ")
+            }
+          }}
           children={field => (
-            <>
+            <div>
               <Label htmlFor={field.name}>Amount</Label>
               <Input
                 id={field.name}
@@ -83,7 +101,7 @@ function Expenses() {
                 onChange={e => field.handleChange(e.target.value)}
               />
               <FieldInfo field={field} />
-            </>
+            </div>
           )}
         />
         <form.Subscribe
