@@ -27,7 +27,7 @@ function Expenses() {
   const form = useForm({
     defaultValues: {
       title: "",
-      amount: 0
+      amount: "0"
     },
     onSubmit: async ({ value }) => {
       // Do something with form data
@@ -80,7 +80,7 @@ function Expenses() {
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 type="number"
-                onChange={e => field.handleChange(Number(e.target.value))}
+                onChange={e => field.handleChange(e.target.value)}
               />
               <FieldInfo field={field} />
             </>
