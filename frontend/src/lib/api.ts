@@ -15,9 +15,23 @@ async function getCurrentUser() {
   return data
 }
 
-
 export const userQueryOptions = queryOptions({
   queryKey: ["get-current-user"],
   queryFn: getCurrentUser,
   staleTime: Infinity
+})
+
+export async function getAllExpenses() {
+  const res = await api.expenses.$get()
+  if (!res.ok) {
+    throw new Error("Network response was not ok")
+  }
+  const data = await res.json()
+  return data
+}
+
+export const getAllExpensesQueryOptions = queryOptions ({
+  queryKey: ["get-all-expenses"],
+  queryFn: getAllExpenses,
+  staleTime: 1000 * 60 * 5, // 5 minutes
 })

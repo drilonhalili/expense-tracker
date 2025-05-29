@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button"
 
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
-import { api } from "@/lib/api"
+import { api, getAllExpensesQueryOptions } from "@/lib/api"
 import { createExpenseSchema } from "../../../../server/sharedTypes"
 import { Calendar } from "@/components/ui/calendar"
-import { date } from "drizzle-orm/mysql-core"
+import { useQueryClient } from "@tanstack/react-query"
 
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
@@ -27,6 +27,7 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 }
 
 function Expenses() {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const form = useForm({
     defaultValues: {
@@ -35,14 +36,24 @@ function Expenses() {
       date: new Date().toISOString()
     },
     onSubmit: async ({ value }) => {
-      // Do something with form data
-      // await new Promise(resolve => setTimeout(resolve, 3000)) // Simulate a delay
-      await api.expenses.$post({
+      const existingExpenses = await queryClient.ensureQueryData(
+        getAllExpensesQueryOptions
+      )
+      const res = await api.expenses.$post({
         json: value
       })
       if (!value) {
         throw new Error("Failed to create expense")
       }
+
+      const newExpense = await res.json()
+      queryClient.setQueryData(
+        getAllExpensesQueryOptions.queryKey,{
+          ...existingExpenses,
+          expenses: [newExpense, ...existingExpenses.expenses]
+        }
+      )
+      // Navigate to the expenses page after successful creation
       navigate({ to: "/expenses" })
     }
   })
