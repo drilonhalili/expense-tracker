@@ -41,6 +41,7 @@ function Expenses() {
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Title</TableHead>
             <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="text-right">Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -56,6 +57,9 @@ function Expenses() {
                   <TableCell className="text-right">
                     <Skeleton className="h-4" />
                   </TableCell>
+                  <TableCell className="text-right">
+                    <Skeleton className="h-4" />
+                  </TableCell>
                 </TableRow>
               ))
             : data?.expenses.map(expense => (
@@ -63,6 +67,7 @@ function Expenses() {
                   <TableCell className="font-medium">{expense.id}</TableCell>
                   <TableCell>{expense.title}</TableCell>
                   <TableCell className="text-right">{expense.amount}</TableCell>
+                  <TableCell className="text-right">{expense.date}</TableCell>
                 </TableRow>
               ))}
         </TableBody>

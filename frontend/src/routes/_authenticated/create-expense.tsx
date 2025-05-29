@@ -7,6 +7,9 @@ import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
 import { api } from "@/lib/api"
 import { createExpenseSchema } from "../../../../server/sharedTypes"
+import { Calendar } from "@/components/ui/calendar"
+import { date } from "drizzle-orm/mysql-core"
+
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
   component: Expenses
@@ -28,7 +31,8 @@ function Expenses() {
   const form = useForm({
     defaultValues: {
       title: "",
-      amount: "0"
+      amount: "0",
+      date: new Date().toISOString()
     },
     onSubmit: async ({ value }) => {
       // Do something with form data
@@ -104,6 +108,35 @@ function Expenses() {
             </div>
           )}
         />
+
+        <form.Field
+          name="date"
+          validators={{
+            onChange: ({ value }) => {
+              const result = createExpenseSchema.shape.date.safeParse(value)
+              return result.success
+                ? undefined
+                : result.error.errors.map(e => e.message).join(", ")
+            }
+          }}
+          children={field => (
+            <div>
+              <Calendar
+                mode="single"
+                selected={new Date(field.state.value)}
+                onSelect={date => {
+                  if (date) {
+                    field.handleChange(date.toISOString())
+                  }
+                  return new Date(field.state.value)
+                }}
+                className="rounded-md border"
+              />
+              <FieldInfo field={field} />
+            </div>
+          )}
+        />
+
         <form.Subscribe
           selector={state => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
