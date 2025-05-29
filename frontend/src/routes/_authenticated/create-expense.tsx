@@ -9,6 +9,7 @@ import { createExpense, getAllExpensesQueryOptions, loadingCreateExpenseQueryOpt
 import { createExpenseSchema } from "../../../../server/sharedTypes"
 import { Calendar } from "@/components/ui/calendar"
 import { useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
   component: Expenses
@@ -53,8 +54,10 @@ function Expenses() {
           ...existingExpenses,
           expenses: [newExpense, ...existingExpenses.expenses]
         })
+        toast.success(`Expense "${newExpense.title}" created successfully!`)
       } catch (error) {
         console.error("Validation error:", error)
+        toast.error("Failed to create expense. Please try again.")
       } finally {
         queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {})
       }

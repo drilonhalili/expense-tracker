@@ -4,6 +4,7 @@ import {
   Link,
   Outlet
 } from "@tanstack/react-router"
+import { Toaster } from "sonner"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 
 interface MyRouterContext {
@@ -42,7 +43,9 @@ function Root() {
       <NavBar />
       <hr />
       <Outlet />
-      <TanStackRouterDevtools />
+      <Toaster />
+      {/* Uncomment the line below to enable the devtools */}
+      <TanStackRouterDevtools position="top-right" />
     </div>
   )
 }
