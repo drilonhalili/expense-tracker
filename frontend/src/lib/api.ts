@@ -49,7 +49,7 @@ export async function createExpense({ value }: { value: CreateExpense }) {
 }
 
 export const loadingCreateExpenseQueryOptions = queryOptions<{
-  expense?: CreateExpense;
+  expense?: CreateExpense
 }>({
   queryKey: ["loading-create-expense"],
   queryFn: async () => {
@@ -57,3 +57,13 @@ export const loadingCreateExpenseQueryOptions = queryOptions<{
   },
   staleTime: Infinity
 })
+
+export async function deleteExpense({ id }: { id: number }) {
+  const res = await api.expenses[":id{[0-9]+}"].$delete({
+    param: { id: String(id) }
+  })
+
+  if (!res.ok) {
+    throw new Error("Failed to delete expense")
+  }
+}
