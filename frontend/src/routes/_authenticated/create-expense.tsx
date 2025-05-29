@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button"
 
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
-import { api, getAllExpensesQueryOptions } from "@/lib/api"
+import { createExpense, getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/lib/api"
 import { createExpenseSchema } from "../../../../server/sharedTypes"
 import { Calendar } from "@/components/ui/calendar"
 import { useQueryClient } from "@tanstack/react-query"
-
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
   component: Expenses
@@ -39,22 +38,26 @@ function Expenses() {
       const existingExpenses = await queryClient.ensureQueryData(
         getAllExpensesQueryOptions
       )
-      const res = await api.expenses.$post({
-        json: value
-      })
-      if (!value) {
-        throw new Error("Failed to create expense")
-      }
 
-      const newExpense = await res.json()
-      queryClient.setQueryData(
-        getAllExpensesQueryOptions.queryKey,{
-          ...existingExpenses,
-          expenses: [newExpense, ...existingExpenses.expenses]
-        }
-      )
       // Navigate to the expenses page after successful creation
       navigate({ to: "/expenses" })
+
+      queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {
+        expense: value
+      })
+
+      try {
+        const newExpense = await createExpense({ value })
+
+        queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, {
+          ...existingExpenses,
+          expenses: [newExpense, ...existingExpenses.expenses]
+        })
+      } catch (error) {
+        console.error("Validation error:", error)
+      } finally {
+        queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {})
+      }
     }
   })
 

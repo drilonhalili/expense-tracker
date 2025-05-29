@@ -25,14 +25,14 @@ const Component = () => {
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context }) => {
-    const queryClient = context.queryClient
+    const queryClient = context.queryClient;
 
     try {
       const data = await queryClient.fetchQuery(userQueryOptions)
       return data
     } catch (error) {
       console.error("Failed to fetch user data:", error)
-      return null
+      return { user: null }
     }
   },
   component: Component
