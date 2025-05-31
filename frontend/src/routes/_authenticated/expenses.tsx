@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/lib/api"
-import { useQuery } from "@tanstack/react-query"
+import {
+  deleteExpense,
+  getAllExpensesQueryOptions,
+  loadingCreateExpenseQueryOptions
+} from "@/lib/api"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   Table,
   TableBody,
@@ -11,6 +15,9 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
+import { Trash } from "lucide-react"
+import { toast } from "sonner"
 
 export const Route = createFileRoute("/_authenticated/expenses")({
   component: Expenses
@@ -18,10 +25,12 @@ export const Route = createFileRoute("/_authenticated/expenses")({
 
 function Expenses() {
   const { isPending, error, data } = useQuery(getAllExpensesQueryOptions)
-  const { data: loadingCreateExpense } = useQuery(loadingCreateExpenseQueryOptions)
+  const { data: loadingCreateExpense } = useQuery(
+    loadingCreateExpenseQueryOptions
+  )
 
   if (error) return "An error has occurred: " + error.message
-  
+
   return (
     <div className="p-2">
       <Table>
@@ -32,15 +41,14 @@ function Expenses() {
             <TableHead>Title</TableHead>
             <TableHead className="text-right">Amount</TableHead>
             <TableHead className="text-right">Date</TableHead>
+            <TableHead className="text-right">Delete</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {loadingCreateExpense?.expense && (
             <TableRow>
               <TableCell className="font-medium">
-                <TableCell className="font-medium">
-                  <Skeleton className="h-4" />
-                </TableCell>
+                <Skeleton className="h-4" />
               </TableCell>
               <TableCell>{loadingCreateExpense?.expense.title}</TableCell>
               <TableCell className="text-right">
@@ -48,6 +56,9 @@ function Expenses() {
               </TableCell>
               <TableCell className="text-right">
                 {loadingCreateExpense?.expense.date}
+              </TableCell>
+              <TableCell className="text-right">
+                <Skeleton className="h-4" />
               </TableCell>
             </TableRow>
           )}
@@ -66,6 +77,9 @@ function Expenses() {
                   <TableCell className="text-right">
                     <Skeleton className="h-4" />
                   </TableCell>
+                  <TableCell className="text-right">
+                    <Skeleton className="h-4" />
+                  </TableCell>
                 </TableRow>
               ))
             : data?.expenses.map(expense => (
@@ -74,10 +88,48 @@ function Expenses() {
                   <TableCell>{expense.title}</TableCell>
                   <TableCell className="text-right">{expense.amount}</TableCell>
                   <TableCell className="text-right">{expense.date}</TableCell>
+                  <TableCell className="text-right">
+                    <ExpenseDeleteButton id={expense.id} />
+                  </TableCell>
                 </TableRow>
               ))}
         </TableBody>
       </Table>
     </div>
+  )
+}
+
+function ExpenseDeleteButton({ id }: { id?: number }) {
+  const queryClient = useQueryClient()
+  const mutation = useMutation({
+    mutationFn: deleteExpense,
+    onError: () => {
+      toast.error("Failed to delete expense")
+    },
+    onSuccess: () => {
+      toast.success("Expense deleted successfully")
+
+      queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, (existingExpenses) => ({
+        ...existingExpenses,
+        expenses: existingExpenses!.expenses.filter((expense) => expense.id !== id)
+      }))
+    }
+  })
+
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      onClick={() => mutation.mutate({ id: id! })}
+      disabled={!id || mutation.isPending}
+    >
+      {
+        mutation.isPending ? (
+          <Skeleton className="h-4 w-4" />
+        ) : (
+          <Trash className="size-4" />
+        )
+      }
+    </Button>
   )
 }
