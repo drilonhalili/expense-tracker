@@ -1,11 +1,11 @@
 import type { QueryClient } from "@tanstack/react-query"
 import {
   createRootRouteWithContext,
-  Link,
   Outlet
 } from "@tanstack/react-router"
 import { Toaster } from "sonner"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
+import Header from "@/components/Header/Header"
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -15,37 +15,15 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: Root
 })
 
-function NavBar() {
-  return (
-    <nav className="p-2 flex gap-2">
-      <Link to="/" className="[&.active]:font-bold">
-        Home
-      </Link>{" "}
-      <Link to="/about" className="[&.active]:font-bold">
-        About
-      </Link>
-      <Link to="/expenses" className="[&.active]:font-bold">
-        Expenses
-      </Link>
-      <Link to="/create-expense" className="[&.active]:font-bold">
-        Create Expense
-      </Link>
-      <Link to="/profile" className="[&.active]:font-bold">
-        Profile
-      </Link>
-    </nav>
-  )
-}
-
 function Root() {
   return (
-    <div className="flex flex-col h-screen max-w-3xl mx-auto">
-      <NavBar />
+    <div className="flex flex-col h-screen max-w-[1600px] mx-auto">
+      <Header />
       <hr />
       <Outlet />
       <Toaster />
       {/* Uncomment the line below to enable the devtools */}
-      <TanStackRouterDevtools position="top-right" />
+      <TanStackRouterDevtools position="bottom-left" />
     </div>
   )
 }
