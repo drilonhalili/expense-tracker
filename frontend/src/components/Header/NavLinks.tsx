@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router"
 
 const NAV_ITEMS = [
-  { name: "About", href: "/about" },
+  { name: "Dashboard", href: "/dashboard" },
   { name: "Expenses", href: "/expenses" },
   { name: "Create Expense", href: "/create-expense" },
   { name: "Profile", href: "/profile" }
