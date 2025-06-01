@@ -24,8 +24,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar"
+import { useQuery } from "@tanstack/react-query"
+import { userQueryOptions } from "@/lib/api"
 
-const data = {
+const sidebarData = {
   user: {
     name: "shadcn",
     email: "m@example.com",
@@ -150,6 +152,18 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const {
+    data: userDataResponse,
+    isPending,
+    error
+  } = useQuery(userQueryOptions)
+
+  const user = userDataResponse?.user ?? {
+    name: "Loading...",
+    email: "",
+    avatar: "/avatars/default.jpg"
+  }
+
   return (
     <Sidebar
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
@@ -173,12 +187,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={sidebarData.navMain} />
+        <NavProjects projects={sidebarData.projects} />
+        <NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )
