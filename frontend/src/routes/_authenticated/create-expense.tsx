@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
 import { createExpense, getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from "@/lib/api"
@@ -147,7 +146,7 @@ function Expenses() {
                   }
                   return new Date(field.state.value)
                 }}
-                className="rounded-md border"
+                className="border rounded-md"
               />
               <FieldInfo field={field} />
             </div>
