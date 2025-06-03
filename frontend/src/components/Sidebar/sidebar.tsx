@@ -1,18 +1,14 @@
 import {
-  BookOpen,
-  Bot,
-  Command,
   Frame,
   LifeBuoy,
   Map,
   PieChart,
   Send,
-  Settings2,
+  UserCog,
   SquareTerminal
 } from "lucide-react"
 
 import { NavMain } from "@/components/Navigation/main"
-import { NavProjects } from "@/components/Navigation/projects"
 import { NavSecondary } from "@/components/Navigation/secondary"
 import { NavUser } from "@/components/Navigation/user"
 import {
@@ -26,6 +22,10 @@ import {
 } from "@/components/ui/sidebar"
 import { useQuery } from "@tanstack/react-query"
 import { userQueryOptions } from "@/lib/api"
+import { IconDatabase, IconFileWord, IconInnerShadowTop, IconReport } from "@tabler/icons-react"
+import { NavProjects } from "../Navigation/projects"
+import { Link } from "@tanstack/react-router"
+import { NavDocuments } from "../Navigation/documents"
 
 const sidebarData = {
   user: {
@@ -43,7 +43,7 @@ const sidebarData = {
         {
           title: "Create Expense",
           url: "/create-expense"
-        },
+        }
         // {
         //   title: "Starred",
         //   url: "#"
@@ -54,70 +54,70 @@ const sidebarData = {
         // }
       ]
     },
+    // {
+    //   title: "Models",
+    //   url: "#",
+    //   icon: Bot,
+    //   items: [
+    //     {
+    //       title: "Genesis",
+    //       url: "#"
+    //     },
+    //     {
+    //       title: "Explorer",
+    //       url: "#"
+    //     },
+    //     {
+    //       title: "Quantum",
+    //       url: "#"
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: "Documentation",
+    //   url: "#",
+    //   icon: BookOpen,
+    //   items: [
+    //     {
+    //       title: "Introduction",
+    //       url: "#"
+    //     },
+    //     {
+    //       title: "Get Started",
+    //       url: "#"
+    //     },
+    //     {
+    //       title: "Tutorials",
+    //       url: "#"
+    //     },
+    //     {
+    //       title: "Changelog",
+    //       url: "#"
+    //     }
+    //   ]
+    // },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#"
-        },
-        {
-          title: "Explorer",
-          url: "#"
-        },
-        {
-          title: "Quantum",
-          url: "#"
-        }
-      ]
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#"
-        },
-        {
-          title: "Get Started",
-          url: "#"
-        },
-        {
-          title: "Tutorials",
-          url: "#"
-        },
-        {
-          title: "Changelog",
-          url: "#"
-        }
-      ]
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#"
-        },
-        {
-          title: "Team",
-          url: "#"
-        },
-        {
-          title: "Billing",
-          url: "#"
-        },
-        {
-          title: "Limits",
-          url: "#"
-        }
-      ]
+      title: "Profile",
+      url: "/profile",
+      icon: UserCog
+      // items: [
+      //   {
+      //     title: "General",
+      //     url: "#"
+      //   },
+      //   {
+      //     title: "Team",
+      //     url: "#"
+      //   },
+      //   {
+      //     title: "Billing",
+      //     url: "#"
+      //   },
+      //   {
+      //     title: "Limits",
+      //     url: "#"
+      //   }
+      // ]
     }
   ],
   navSecondary: [
@@ -148,6 +148,23 @@ const sidebarData = {
       url: "#",
       icon: Map
     }
+  ],
+  documents: [
+    {
+      name: "Data Library",
+      url: "#",
+      icon: IconDatabase
+    },
+    {
+      name: "Reports",
+      url: "#",
+      icon: IconReport
+    },
+    {
+      name: "Word Assistant",
+      url: "#",
+      icon: IconFileWord
+    }
   ]
 }
 
@@ -165,30 +182,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
-      {...props}
-    >
+    <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground aspect-square size-8">
-                  <Command className="size-4" />
-                </div>
-                <div className="grid flex-1 text-sm leading-tight text-left">
-                  <span className="font-medium truncate">Acme Inc</span>
-                  <span className="text-xs truncate">Enterprise</span>
-                </div>
-              </a>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+            >
+              <Link to="/dashboard">
+                <IconInnerShadowTop className="!size-5" />
+                <span className="text-base font-semibold">Acme Inc.</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={sidebarData.navMain} />
-        <NavProjects projects={sidebarData.projects} />
+        <NavDocuments items={sidebarData.documents} />
         <NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

@@ -15,7 +15,7 @@ import { Route as PublicImport } from './routes/_public'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as PublicRegisterImport } from './routes/_public/register'
-import { Route as PublicLoginImport } from './routes/_public/login'
+import { Route as PublicForgotPasswordImport } from './routes/_public/forgot-password'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedExpensesImport } from './routes/_authenticated/expenses'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
@@ -45,9 +45,9 @@ const PublicRegisterRoute = PublicRegisterImport.update({
   getParentRoute: () => PublicRoute,
 } as any)
 
-const PublicLoginRoute = PublicLoginImport.update({
-  id: '/login',
-  path: '/login',
+const PublicForgotPasswordRoute = PublicForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => PublicRoute,
 } as any)
 
@@ -130,11 +130,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_public/login': {
-      id: '/_public/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof PublicLoginImport
+    '/_public/forgot-password': {
+      id: '/_public/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof PublicForgotPasswordImport
       parentRoute: typeof PublicImport
     }
     '/_public/register': {
@@ -168,12 +168,12 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface PublicRouteChildren {
-  PublicLoginRoute: typeof PublicLoginRoute
+  PublicForgotPasswordRoute: typeof PublicForgotPasswordRoute
   PublicRegisterRoute: typeof PublicRegisterRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
-  PublicLoginRoute: PublicLoginRoute,
+  PublicForgotPasswordRoute: PublicForgotPasswordRoute,
   PublicRegisterRoute: PublicRegisterRoute,
 }
 
@@ -187,7 +187,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/login': typeof PublicLoginRoute
+  '/forgot-password': typeof PublicForgotPasswordRoute
   '/register': typeof PublicRegisterRoute
 }
 
@@ -198,7 +198,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/login': typeof PublicLoginRoute
+  '/forgot-password': typeof PublicForgotPasswordRoute
   '/register': typeof PublicRegisterRoute
 }
 
@@ -211,7 +211,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/_public/login': typeof PublicLoginRoute
+  '/_public/forgot-password': typeof PublicForgotPasswordRoute
   '/_public/register': typeof PublicRegisterRoute
 }
 
@@ -224,7 +224,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/expenses'
     | '/profile'
-    | '/login'
+    | '/forgot-password'
     | '/register'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -234,7 +234,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/expenses'
     | '/profile'
-    | '/login'
+    | '/forgot-password'
     | '/register'
   id:
     | '__root__'
@@ -245,7 +245,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/expenses'
     | '/_authenticated/profile'
-    | '/_public/login'
+    | '/_public/forgot-password'
     | '/_public/register'
   fileRoutesById: FileRoutesById
 }
@@ -292,7 +292,7 @@ export const routeTree = rootRoute
     "/_public": {
       "filePath": "_public.tsx",
       "children": [
-        "/_public/login",
+        "/_public/forgot-password",
         "/_public/register"
       ]
     },
@@ -312,8 +312,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/profile.tsx",
       "parent": "/_authenticated"
     },
-    "/_public/login": {
-      "filePath": "_public/login.tsx",
+    "/_public/forgot-password": {
+      "filePath": "_public/forgot-password.tsx",
       "parent": "/_public"
     },
     "/_public/register": {

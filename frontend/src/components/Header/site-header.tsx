@@ -1,47 +1,42 @@
-import { SidebarIcon } from "lucide-react"
-
-import { SearchForm } from "@/components/Search/search-form"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from "@/components/ui/breadcrumb"
+import { useQuery } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { useSidebar } from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { SearchForm } from "@/components/Search/search-form"
+import { Skeleton } from "@/components/ui/skeleton"
+import { userQueryOptions } from "@/lib/api"
 
 export function SiteHeader() {
-  const { toggleSidebar } = useSidebar()
+  const { isPending, error, data } = useQuery(userQueryOptions)
 
   return (
-    <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
-      <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
-        <Button
-          className="h-8 w-8"
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-        >
-          <SidebarIcon />
-        </Button>
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb className="hidden sm:block">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">
-                Building Your Application
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+      <div className="flex items-center w-full gap-1 px-4 lg:gap-2 lg:px-6">
+        <SidebarTrigger className="-ml-1" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 data-[orientation=vertical]:h-4"
+        />
+        <SearchForm className="flex-1 max-w-xs" />
+        <div className="flex items-center gap-2 ml-auto">
+          {isPending ? (
+            <Skeleton className="w-8 h-8 rounded-full" />
+          ) : data?.user?.picture ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden p-0 rounded-full sm:flex"
+              aria-label={data.user.family_name || data.user.email}
+            >
+              <img
+                src={data.user.picture}
+                alt={data.user.family_name || data.user.email}
+                className="object-cover w-8 h-8 rounded-full"
+                referrerPolicy="no-referrer"
+              />
+            </Button>
+          ) : null}
+        </div>
       </div>
     </header>
   )

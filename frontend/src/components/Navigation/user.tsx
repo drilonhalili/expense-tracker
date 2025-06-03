@@ -24,6 +24,7 @@ import {
   useSidebar
 } from "@/components/ui/sidebar"
 import { getInitials } from "@/lib/utils"
+import { Link } from "@tanstack/react-router"
 
 interface User {
   name: string
@@ -43,15 +44,15 @@ export function NavUser({ user }: { user: User }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="w-8 h-8 rounded-lg">
                 <AvatarImage src={user.picture} alt={user.name} />
                 <AvatarFallback className="rounded-lg">
                   {getInitials(user.name)}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+              <div className="grid flex-1 text-sm leading-tight text-left">
+                <span className="font-medium truncate">{user.name}</span>
+                <span className="text-xs truncate">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -64,15 +65,15 @@ export function NavUser({ user }: { user: User }) {
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="w-8 h-8 rounded-lg">
                   <AvatarImage src={user.picture} alt={user.name} />
                   <AvatarFallback className="rounded-lg">
                     {getInitials(user.name)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                <div className="grid flex-1 text-sm leading-tight text-left">
+                  <span className="font-medium truncate">{user.name}</span>
+                  <span className="text-xs truncate">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -99,13 +100,11 @@ export function NavUser({ user }: { user: User }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onSelect={() => {
-                window.location.href = "/api/logout"
-              }}
-            >
+            <DropdownMenuItem asChild>
+              <Link to="/logout">
               <LogOut />
               Log out
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
