@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { SearchForm } from "@/components/Search/search-form"
+import { SearchForm } from "@/components/Search/SearchForm"
 import { Skeleton } from "@/components/ui/skeleton"
 import { userQueryOptions } from "@/lib/api"
 

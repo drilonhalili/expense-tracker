@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table"
-import { ExpenseDeleteButton } from "@/components/DeleteButton/expense-delete-button"
+import { ExpenseDeleteButton } from "@/components/DeleteButton/ExpenseDeleteButton"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const Route = createFileRoute("/_authenticated/expenses")({

@@ -1,8 +1,8 @@
 import { Outlet, redirect, useNavigate } from "@tanstack/react-router"
 import { createFileRoute } from "@tanstack/react-router"
 import { userQueryOptions } from "@/lib/api"
-import { SiteHeader } from "@/components/Header/site-header"
-import { AppSidebar } from "@/components/Sidebar/sidebar"
+import { SiteHeader } from "@/components/Header/SiteHeader"
+import { AppSidebar } from "@/components/Sidebar/Sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 const Component = () => {
