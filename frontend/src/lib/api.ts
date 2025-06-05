@@ -67,3 +67,14 @@ export async function deleteExpense({ id }: { id: number }) {
     throw new Error("Failed to delete expense")
   }
 }
+
+export async function updateExpense({ id, value }: { id: number; value: any }) {
+  const res = await api.expenses[":id{[0-9]+}"].$put({
+    param: { id: String(id) },
+    json: value
+  })
+  if (!res.ok) {
+    throw new Error("Failed to update expense")
+  }
+  return res.json().then(r => r.expense)
+}

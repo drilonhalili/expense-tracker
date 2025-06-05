@@ -42,14 +42,14 @@ export const expensesRoute = new Hono()
   })
   .get("/total-spent", getUser, async c => {
     const user = c.var.user
-    
+
     const result = await db
       .select({ total: sum(expenseTable.amount) })
       .from(expenseTable)
       .where(eq(expenseTable.userId, user.id))
       .limit(1)
       .then(res => res[0])
-    
+
     return c.json(result)
   })
   .get("/:id{[0-9]+}", getUser, async c => {
@@ -83,4 +83,27 @@ export const expensesRoute = new Hono()
 
     return c.json({ expense: expense })
   })
-// .put
+  .put(
+    "/:id{[0-9]+}",
+    getUser,
+    zValidator("json", createExpenseSchema),
+    async c => {
+      const id = Number.parseInt(c.req.param("id"))
+      const user = c.var.user
+      const data = await c.req.valid("json")
+
+      const [updated] = await db
+        .update(expenseTable)
+        .set({
+          ...data
+        })
+        .where(and(eq(expenseTable.userId, user.id), eq(expenseTable.id, id)))
+        .returning()
+
+      if (!updated) {
+        return c.notFound()
+      }
+
+      return c.json({ expense: updated })
+    }
+  )

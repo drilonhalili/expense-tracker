@@ -14,6 +14,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { ExpenseDeleteButton } from "@/components/DeleteButton/ExpenseDeleteButton"
+import { ExpenseEditButton } from "@/components/EditButton/ExpenseEditButton"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const Route = createFileRoute("/_authenticated/expenses")({
@@ -37,6 +38,7 @@ function Expenses() {
           <TableHead>Title</TableHead>
           <TableHead className="text-right">Amount</TableHead>
           <TableHead className="text-right">Date</TableHead>
+          <TableHead className="text-right">Edit</TableHead>
           <TableHead className="text-right">Delete</TableHead>
         </TableRow>
       </TableHeader>
@@ -52,6 +54,9 @@ function Expenses() {
             </TableCell>
             <TableCell className="text-right">
               {loadingCreateExpense?.expense.date}
+            </TableCell>
+            <TableCell className="text-right">
+              <Skeleton className="h-4" />
             </TableCell>
             <TableCell className="text-right">
               <Skeleton className="h-4" />
@@ -76,6 +81,9 @@ function Expenses() {
                 <TableCell className="text-right">
                   <Skeleton className="h-4" />
                 </TableCell>
+                <TableCell className="text-right">
+                  <Skeleton className="h-4" />
+                </TableCell>
               </TableRow>
             ))
           : data?.expenses.map(expense => (
@@ -84,6 +92,9 @@ function Expenses() {
                 <TableCell>{expense.title}</TableCell>
                 <TableCell className="text-right">{expense.amount}</TableCell>
                 <TableCell className="text-right">{expense.date}</TableCell>
+                <TableCell className="text-right">
+                  <ExpenseEditButton expense={expense} />
+                </TableCell>
                 <TableCell className="text-right">
                   <ExpenseDeleteButton id={expense.id} />
                 </TableCell>
