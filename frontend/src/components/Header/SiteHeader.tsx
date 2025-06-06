@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { SearchForm } from "@/components/Search/SearchForm"
 import { Skeleton } from "@/components/ui/skeleton"
 import { userQueryOptions } from "@/lib/api"
+import { ThemeToggle } from "../theme-toggle"
+import { UserAvatar } from "../user-avatar"
 
 export function SiteHeader() {
   const { isPending, error, data } = useQuery(userQueryOptions)
@@ -19,23 +20,12 @@ export function SiteHeader() {
         />
         <SearchForm className="flex-1 max-w-xs" />
         <div className="flex items-center gap-2 ml-auto">
+          <ThemeToggle />
           {isPending ? (
             <Skeleton className="w-8 h-8 rounded-full" />
-          ) : data?.user?.picture ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hidden p-0 rounded-full sm:flex"
-              aria-label={data.user.family_name || data.user.email}
-            >
-              <img
-                src={data.user.picture}
-                alt={data.user.family_name || data.user.email}
-                className="object-cover w-8 h-8 rounded-full"
-                referrerPolicy="no-referrer"
-              />
-            </Button>
-          ) : null}
+          ) : (
+            <UserAvatar user={data?.user} />
+          )}
         </div>
       </div>
     </header>
