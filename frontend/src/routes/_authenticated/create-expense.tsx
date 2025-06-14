@@ -30,9 +30,10 @@ function Expenses() {
   const navigate = useNavigate()
   const form = useForm({
     defaultValues: {
-      title: "",
+      date: new Date().toISOString(),
+      location: "",
+      category: "",
       amount: "0",
-      date: new Date().toISOString()
     },
     onSubmit: async ({ value }) => {
       const existingExpenses = await queryClient.ensureQueryData(
@@ -53,7 +54,7 @@ function Expenses() {
           ...existingExpenses,
           expenses: [newExpense, ...existingExpenses.expenses]
         })
-        toast.success(`Expense "${newExpense.title}" created successfully!`)
+        toast.success(`Expense "${newExpense.category}" created successfully!`)
       } catch (error) {
         console.error("Validation error:", error)
         toast.error("Failed to create expense. Please try again.")
@@ -75,10 +76,10 @@ function Expenses() {
         className="flex flex-col gap-2"
       >
         <form.Field
-          name="title"
+          name="date"
           validators={{
             onChange: ({ value }) => {
-              const result = createExpenseSchema.shape.title.safeParse(value)
+              const result = createExpenseSchema.shape.date.safeParse(value)
               return result.success
                 ? undefined
                 : result.error.errors.map(e => e.message).join(", ")
@@ -86,7 +87,68 @@ function Expenses() {
           }}
           children={field => (
             <div>
-              <Label htmlFor={field.name}>Title</Label>
+              <Calendar
+                mode="single"
+                selected={new Date(field.state.value)}
+                onSelect={date => {
+                  if (date) {
+                    field.handleChange(date.toISOString())
+                  }
+                  return new Date(field.state.value)
+                }}
+                className="border rounded-md"
+              />
+              <FieldInfo field={field} />
+            </div>
+            )}
+          />
+
+          <form.Field
+            name="location"
+            validators={{
+            onChange: ({ value }) => {
+              const result = createExpenseSchema.shape.location.safeParse(value)
+              return result.success
+              ? undefined
+              : result.error.errors.map(e => e.message).join(", ")
+            }
+            }}
+            children={field => (
+            <div>
+              <Label htmlFor={field.name}>Location</Label>
+              <select
+              id={field.name}
+              name={field.name}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={e => field.handleChange(e.target.value)}
+              className="border rounded-md px-2 py-1"
+              >
+              <option value="">Select location</option>
+              <option value="butel">Butel</option>
+              <option value="kisella-voda">Kisella Voda</option>
+              <option value="chair">Chair</option>
+              <option value="stadion">Stadion</option>
+              <option value="emka">Emka</option>
+              </select>
+              <FieldInfo field={field} />
+            </div>
+            )}
+          />
+
+          <form.Field
+            name="category"
+            validators={{
+            onChange: ({ value }) => {
+              const result = createExpenseSchema.shape.category.safeParse(value)
+              return result.success
+                ? undefined
+                : result.error.errors.map(e => e.message).join(", ")
+            }
+          }}
+          children={field => (
+            <div>
+              <Label htmlFor={field.name}>Category</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -119,34 +181,6 @@ function Expenses() {
                 onBlur={field.handleBlur}
                 type="number"
                 onChange={e => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </div>
-          )}
-        />
-
-        <form.Field
-          name="date"
-          validators={{
-            onChange: ({ value }) => {
-              const result = createExpenseSchema.shape.date.safeParse(value)
-              return result.success
-                ? undefined
-                : result.error.errors.map(e => e.message).join(", ")
-            }
-          }}
-          children={field => (
-            <div>
-              <Calendar
-                mode="single"
-                selected={new Date(field.state.value)}
-                onSelect={date => {
-                  if (date) {
-                    field.handleChange(date.toISOString())
-                  }
-                  return new Date(field.state.value)
-                }}
-                className="border rounded-md"
               />
               <FieldInfo field={field} />
             </div>

@@ -27,6 +27,14 @@ function Expenses() {
     loadingCreateExpenseQueryOptions
   )
 
+  const locationLabels: Record<string, string> = {
+    "butel": "Butel",
+    "kisella-voda": "Kisella Voda",
+    "chair": "Chair",
+    "stadion": "Stadion",
+    "emka": "Emka"
+  }
+
   if (error) return "An error has occurred: " + error.message
 
   return (
@@ -35,9 +43,10 @@ function Expenses() {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">ID</TableHead>
-          <TableHead>Title</TableHead>
+          <TableHead className="">Date</TableHead>
+          <TableHead className="">Location</TableHead>
+          <TableHead>Category</TableHead>
           <TableHead className="text-right">Amount</TableHead>
-          <TableHead className="text-right">Date</TableHead>
           <TableHead className="text-right">Edit</TableHead>
           <TableHead className="text-right">Delete</TableHead>
         </TableRow>
@@ -48,12 +57,15 @@ function Expenses() {
             <TableCell className="font-medium">
               <Skeleton className="h-4" />
             </TableCell>
-            <TableCell>{loadingCreateExpense?.expense.title}</TableCell>
-            <TableCell className="text-right">
-              {loadingCreateExpense?.expense.amount}
-            </TableCell>
             <TableCell className="text-right">
               {loadingCreateExpense?.expense.date}
+            </TableCell>
+            <TableCell className="text-right">
+              {loadingCreateExpense?.expense.location}
+            </TableCell>
+            <TableCell>{loadingCreateExpense?.expense.category}</TableCell>
+            <TableCell className="text-right">
+              {loadingCreateExpense?.expense.amount}
             </TableCell>
             <TableCell className="text-right">
               <Skeleton className="h-4" />
@@ -89,9 +101,12 @@ function Expenses() {
           : data?.expenses.map(expense => (
               <TableRow key={expense.id}>
                 <TableCell className="font-medium">{expense.id}</TableCell>
-                <TableCell>{expense.title}</TableCell>
+                <TableCell className="">{expense.date}</TableCell>
+                <TableCell className="">
+                  {locationLabels[expense.location] || expense.location}
+                </TableCell>
+                <TableCell>{expense.category}</TableCell>
                 <TableCell className="text-right">{expense.amount}</TableCell>
-                <TableCell className="text-right">{expense.date}</TableCell>
                 <TableCell className="text-right">
                   <ExpenseEditButton expense={expense} />
                 </TableCell>

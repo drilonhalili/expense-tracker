@@ -17,9 +17,17 @@ import { Route as IndexImport } from './routes/index'
 import { Route as PublicRegisterImport } from './routes/_public/register'
 import { Route as PublicForgotPasswordImport } from './routes/_public/forgot-password'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedIncomeImport } from './routes/_authenticated/income'
 import { Route as AuthenticatedExpensesImport } from './routes/_authenticated/expenses'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCreateExpenseImport } from './routes/_authenticated/create-expense'
+import { Route as AuthenticatedBankIncomeImport } from './routes/_authenticated/bank-income'
+import { Route as AuthenticatedLocationsIndexImport } from './routes/_authenticated/locations/index'
+import { Route as AuthenticatedLocationsStadionImport } from './routes/_authenticated/locations/stadion'
+import { Route as AuthenticatedLocationsKisellaVodaImport } from './routes/_authenticated/locations/kisella-voda'
+import { Route as AuthenticatedLocationsEmkaImport } from './routes/_authenticated/locations/emka'
+import { Route as AuthenticatedLocationsChairImport } from './routes/_authenticated/locations/chair'
+import { Route as AuthenticatedLocationsButelImport } from './routes/_authenticated/locations/butel'
 
 // Create/Update Routes
 
@@ -57,6 +65,12 @@ const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedIncomeRoute = AuthenticatedIncomeImport.update({
+  id: '/income',
+  path: '/income',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedExpensesRoute = AuthenticatedExpensesImport.update({
   id: '/expenses',
   path: '/expenses',
@@ -76,6 +90,55 @@ const AuthenticatedCreateExpenseRoute = AuthenticatedCreateExpenseImport.update(
     getParentRoute: () => AuthenticatedRoute,
   } as any,
 )
+
+const AuthenticatedBankIncomeRoute = AuthenticatedBankIncomeImport.update({
+  id: '/bank-income',
+  path: '/bank-income',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedLocationsIndexRoute =
+  AuthenticatedLocationsIndexImport.update({
+    id: '/locations/',
+    path: '/locations/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedLocationsStadionRoute =
+  AuthenticatedLocationsStadionImport.update({
+    id: '/locations/stadion',
+    path: '/locations/stadion',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedLocationsKisellaVodaRoute =
+  AuthenticatedLocationsKisellaVodaImport.update({
+    id: '/locations/kisella-voda',
+    path: '/locations/kisella-voda',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedLocationsEmkaRoute = AuthenticatedLocationsEmkaImport.update(
+  {
+    id: '/locations/emka',
+    path: '/locations/emka',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
+
+const AuthenticatedLocationsChairRoute =
+  AuthenticatedLocationsChairImport.update({
+    id: '/locations/chair',
+    path: '/locations/chair',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedLocationsButelRoute =
+  AuthenticatedLocationsButelImport.update({
+    id: '/locations/butel',
+    path: '/locations/butel',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -102,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/bank-income': {
+      id: '/_authenticated/bank-income'
+      path: '/bank-income'
+      fullPath: '/bank-income'
+      preLoaderRoute: typeof AuthenticatedBankIncomeImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/create-expense': {
       id: '/_authenticated/create-expense'
       path: '/create-expense'
@@ -121,6 +191,13 @@ declare module '@tanstack/react-router' {
       path: '/expenses'
       fullPath: '/expenses'
       preLoaderRoute: typeof AuthenticatedExpensesImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/income': {
+      id: '/_authenticated/income'
+      path: '/income'
+      fullPath: '/income'
+      preLoaderRoute: typeof AuthenticatedIncomeImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/profile': {
@@ -144,23 +221,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRegisterImport
       parentRoute: typeof PublicImport
     }
+    '/_authenticated/locations/butel': {
+      id: '/_authenticated/locations/butel'
+      path: '/locations/butel'
+      fullPath: '/locations/butel'
+      preLoaderRoute: typeof AuthenticatedLocationsButelImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/locations/chair': {
+      id: '/_authenticated/locations/chair'
+      path: '/locations/chair'
+      fullPath: '/locations/chair'
+      preLoaderRoute: typeof AuthenticatedLocationsChairImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/locations/emka': {
+      id: '/_authenticated/locations/emka'
+      path: '/locations/emka'
+      fullPath: '/locations/emka'
+      preLoaderRoute: typeof AuthenticatedLocationsEmkaImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/locations/kisella-voda': {
+      id: '/_authenticated/locations/kisella-voda'
+      path: '/locations/kisella-voda'
+      fullPath: '/locations/kisella-voda'
+      preLoaderRoute: typeof AuthenticatedLocationsKisellaVodaImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/locations/stadion': {
+      id: '/_authenticated/locations/stadion'
+      path: '/locations/stadion'
+      fullPath: '/locations/stadion'
+      preLoaderRoute: typeof AuthenticatedLocationsStadionImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/locations/': {
+      id: '/_authenticated/locations/'
+      path: '/locations'
+      fullPath: '/locations'
+      preLoaderRoute: typeof AuthenticatedLocationsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedBankIncomeRoute: typeof AuthenticatedBankIncomeRoute
   AuthenticatedCreateExpenseRoute: typeof AuthenticatedCreateExpenseRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedExpensesRoute: typeof AuthenticatedExpensesRoute
+  AuthenticatedIncomeRoute: typeof AuthenticatedIncomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedLocationsButelRoute: typeof AuthenticatedLocationsButelRoute
+  AuthenticatedLocationsChairRoute: typeof AuthenticatedLocationsChairRoute
+  AuthenticatedLocationsEmkaRoute: typeof AuthenticatedLocationsEmkaRoute
+  AuthenticatedLocationsKisellaVodaRoute: typeof AuthenticatedLocationsKisellaVodaRoute
+  AuthenticatedLocationsStadionRoute: typeof AuthenticatedLocationsStadionRoute
+  AuthenticatedLocationsIndexRoute: typeof AuthenticatedLocationsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedBankIncomeRoute: AuthenticatedBankIncomeRoute,
   AuthenticatedCreateExpenseRoute: AuthenticatedCreateExpenseRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExpensesRoute: AuthenticatedExpensesRoute,
+  AuthenticatedIncomeRoute: AuthenticatedIncomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedLocationsButelRoute: AuthenticatedLocationsButelRoute,
+  AuthenticatedLocationsChairRoute: AuthenticatedLocationsChairRoute,
+  AuthenticatedLocationsEmkaRoute: AuthenticatedLocationsEmkaRoute,
+  AuthenticatedLocationsKisellaVodaRoute:
+    AuthenticatedLocationsKisellaVodaRoute,
+  AuthenticatedLocationsStadionRoute: AuthenticatedLocationsStadionRoute,
+  AuthenticatedLocationsIndexRoute: AuthenticatedLocationsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -183,23 +319,39 @@ const PublicRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof PublicRouteWithChildren
+  '/bank-income': typeof AuthenticatedBankIncomeRoute
   '/create-expense': typeof AuthenticatedCreateExpenseRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
+  '/income': typeof AuthenticatedIncomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/forgot-password': typeof PublicForgotPasswordRoute
   '/register': typeof PublicRegisterRoute
+  '/locations/butel': typeof AuthenticatedLocationsButelRoute
+  '/locations/chair': typeof AuthenticatedLocationsChairRoute
+  '/locations/emka': typeof AuthenticatedLocationsEmkaRoute
+  '/locations/kisella-voda': typeof AuthenticatedLocationsKisellaVodaRoute
+  '/locations/stadion': typeof AuthenticatedLocationsStadionRoute
+  '/locations': typeof AuthenticatedLocationsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PublicRouteWithChildren
+  '/bank-income': typeof AuthenticatedBankIncomeRoute
   '/create-expense': typeof AuthenticatedCreateExpenseRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/expenses': typeof AuthenticatedExpensesRoute
+  '/income': typeof AuthenticatedIncomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/forgot-password': typeof PublicForgotPasswordRoute
   '/register': typeof PublicRegisterRoute
+  '/locations/butel': typeof AuthenticatedLocationsButelRoute
+  '/locations/chair': typeof AuthenticatedLocationsChairRoute
+  '/locations/emka': typeof AuthenticatedLocationsEmkaRoute
+  '/locations/kisella-voda': typeof AuthenticatedLocationsKisellaVodaRoute
+  '/locations/stadion': typeof AuthenticatedLocationsStadionRoute
+  '/locations': typeof AuthenticatedLocationsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -207,12 +359,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_authenticated/bank-income': typeof AuthenticatedBankIncomeRoute
   '/_authenticated/create-expense': typeof AuthenticatedCreateExpenseRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
+  '/_authenticated/income': typeof AuthenticatedIncomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_public/forgot-password': typeof PublicForgotPasswordRoute
   '/_public/register': typeof PublicRegisterRoute
+  '/_authenticated/locations/butel': typeof AuthenticatedLocationsButelRoute
+  '/_authenticated/locations/chair': typeof AuthenticatedLocationsChairRoute
+  '/_authenticated/locations/emka': typeof AuthenticatedLocationsEmkaRoute
+  '/_authenticated/locations/kisella-voda': typeof AuthenticatedLocationsKisellaVodaRoute
+  '/_authenticated/locations/stadion': typeof AuthenticatedLocationsStadionRoute
+  '/_authenticated/locations/': typeof AuthenticatedLocationsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -220,33 +380,57 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/bank-income'
     | '/create-expense'
     | '/dashboard'
     | '/expenses'
+    | '/income'
     | '/profile'
     | '/forgot-password'
     | '/register'
+    | '/locations/butel'
+    | '/locations/chair'
+    | '/locations/emka'
+    | '/locations/kisella-voda'
+    | '/locations/stadion'
+    | '/locations'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
+    | '/bank-income'
     | '/create-expense'
     | '/dashboard'
     | '/expenses'
+    | '/income'
     | '/profile'
     | '/forgot-password'
     | '/register'
+    | '/locations/butel'
+    | '/locations/chair'
+    | '/locations/emka'
+    | '/locations/kisella-voda'
+    | '/locations/stadion'
+    | '/locations'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_public'
+    | '/_authenticated/bank-income'
     | '/_authenticated/create-expense'
     | '/_authenticated/dashboard'
     | '/_authenticated/expenses'
+    | '/_authenticated/income'
     | '/_authenticated/profile'
     | '/_public/forgot-password'
     | '/_public/register'
+    | '/_authenticated/locations/butel'
+    | '/_authenticated/locations/chair'
+    | '/_authenticated/locations/emka'
+    | '/_authenticated/locations/kisella-voda'
+    | '/_authenticated/locations/stadion'
+    | '/_authenticated/locations/'
   fileRoutesById: FileRoutesById
 }
 
@@ -283,10 +467,18 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/bank-income",
         "/_authenticated/create-expense",
         "/_authenticated/dashboard",
         "/_authenticated/expenses",
-        "/_authenticated/profile"
+        "/_authenticated/income",
+        "/_authenticated/profile",
+        "/_authenticated/locations/butel",
+        "/_authenticated/locations/chair",
+        "/_authenticated/locations/emka",
+        "/_authenticated/locations/kisella-voda",
+        "/_authenticated/locations/stadion",
+        "/_authenticated/locations/"
       ]
     },
     "/_public": {
@@ -295,6 +487,10 @@ export const routeTree = rootRoute
         "/_public/forgot-password",
         "/_public/register"
       ]
+    },
+    "/_authenticated/bank-income": {
+      "filePath": "_authenticated/bank-income.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/create-expense": {
       "filePath": "_authenticated/create-expense.tsx",
@@ -308,6 +504,10 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/expenses.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/income": {
+      "filePath": "_authenticated/income.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/profile": {
       "filePath": "_authenticated/profile.tsx",
       "parent": "/_authenticated"
@@ -319,6 +519,30 @@ export const routeTree = rootRoute
     "/_public/register": {
       "filePath": "_public/register.tsx",
       "parent": "/_public"
+    },
+    "/_authenticated/locations/butel": {
+      "filePath": "_authenticated/locations/butel.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/locations/chair": {
+      "filePath": "_authenticated/locations/chair.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/locations/emka": {
+      "filePath": "_authenticated/locations/emka.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/locations/kisella-voda": {
+      "filePath": "_authenticated/locations/kisella-voda.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/locations/stadion": {
+      "filePath": "_authenticated/locations/stadion.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/locations/": {
+      "filePath": "_authenticated/locations/index.tsx",
+      "parent": "/_authenticated"
     }
   }
 }
