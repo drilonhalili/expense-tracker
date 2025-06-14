@@ -35,23 +35,57 @@ const sidebarData = {
   },
   navMain: [
     {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: IconInnerShadowTop,
+      isActive: true
+    },
+    {
+      title: "Bank Income",
+      url: "/bank-income",
+      icon: SquareTerminal,
+    },
+    {
       title: "Expenses",
       url: "/expenses",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: "Create Expense",
           url: "/create-expense"
         }
-        // {
-        //   title: "Starred",
-        //   url: "#"
-        // },
-        // {
-        //   title: "Settings",
-        //   url: "#"
-        // }
+      ]
+    },
+    {
+      title: "Income",
+      url: "/income",
+      icon: SquareTerminal
+    },
+    {
+      title: "Locations",
+      url: "/locations",
+      icon: Map,
+      items: [
+        {
+          title: "Butel",
+          url: "/locations/butel"
+        },
+        {
+          title: "Kisella voda",
+          url: "/locations/kisella-voda"
+        },
+        {
+          title: "Chair",
+          url: "/locations/chair"
+        },
+        {
+          title: "Stadion",
+          url: "/locations/stadion"
+        },
+        {
+          title: "Emka",
+          url: "/locations/emka"
+        }
       ]
     },
     // {
