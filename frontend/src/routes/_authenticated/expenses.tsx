@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router"
 import {
   getAllExpensesQueryOptions,
   loadingCreateExpenseQueryOptions,
-  createExpense
+  createExpense,
+  deleteExpense
 } from "@/lib/api"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState, useMemo } from "react"
@@ -27,8 +28,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ExpenseEditButton } from "@/components/EditButton/ExpenseEditButton"
-import { ExpenseDeleteButton } from "@/components/DeleteButton/ExpenseDeleteButton"
+import { ExpenseActionsMenu } from "@/components/ExpenseTable/ExpenseActionsMenu"
 
 const locationTabs = [
   { value: "", label: "All" },
@@ -75,6 +75,30 @@ function Expenses() {
     } finally {
       queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {})
     }
+  }
+
+  async function handleDelete(expenseId: number) {
+    try {
+      await deleteExpense({ id: expenseId })
+      queryClient.setQueryData(
+        getAllExpensesQueryOptions.queryKey,
+        (existingExpenses: any) => ({
+          ...existingExpenses,
+          expenses:
+            existingExpenses?.expenses?.filter(
+              (expense: any) => expense.id !== expenseId
+            ) ?? []
+        })
+      )
+      toast.success("Expense deleted successfully")
+    } catch {
+      toast.error("Failed to delete expense")
+    }
+  }
+
+  function handleCopy(expense: any) {
+    navigator.clipboard.writeText(JSON.stringify(expense, null, 2))
+    toast.success("Expense copied to clipboard!")
   }
 
   const locationLabels: Record<string, string> = {
@@ -134,8 +158,7 @@ function Expenses() {
             <TableHead>Location</TableHead>
             <TableHead>Category</TableHead>
             <TableHead className="text-right">Amount</TableHead>
-            <TableHead className="text-right">Edit</TableHead>
-            <TableHead className="text-right">Delete</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -166,10 +189,11 @@ function Expenses() {
                   <TableCell>{expense.category}</TableCell>
                   <TableCell className="text-right">{expense.amount}</TableCell>
                   <TableCell className="text-right">
-                    <ExpenseEditButton expense={expense} />
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <ExpenseDeleteButton id={expense.id} />
+                    <ExpenseActionsMenu
+                      expense={expense}
+                      onDelete={handleDelete}
+                      onCopy={handleCopy}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
