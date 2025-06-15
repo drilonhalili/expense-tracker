@@ -19,6 +19,7 @@ import { Route as PublicForgotPasswordImport } from './routes/_public/forgot-pas
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedIncomeImport } from './routes/_authenticated/income'
 import { Route as AuthenticatedExpensesImport } from './routes/_authenticated/expenses'
+import { Route as AuthenticatedDataImport } from './routes/_authenticated/data'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCreateExpenseImport } from './routes/_authenticated/create-expense'
 import { Route as AuthenticatedBankIncomeImport } from './routes/_authenticated/bank-income'
@@ -74,6 +75,12 @@ const AuthenticatedIncomeRoute = AuthenticatedIncomeImport.update({
 const AuthenticatedExpensesRoute = AuthenticatedExpensesImport.update({
   id: '/expenses',
   path: '/expenses',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedDataRoute = AuthenticatedDataImport.update({
+  id: '/data',
+  path: '/data',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
@@ -186,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/data': {
+      id: '/_authenticated/data'
+      path: '/data'
+      fullPath: '/data'
+      preLoaderRoute: typeof AuthenticatedDataImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/expenses': {
       id: '/_authenticated/expenses'
       path: '/expenses'
@@ -272,6 +286,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBankIncomeRoute: typeof AuthenticatedBankIncomeRoute
   AuthenticatedCreateExpenseRoute: typeof AuthenticatedCreateExpenseRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDataRoute: typeof AuthenticatedDataRoute
   AuthenticatedExpensesRoute: typeof AuthenticatedExpensesRoute
   AuthenticatedIncomeRoute: typeof AuthenticatedIncomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
@@ -287,6 +302,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBankIncomeRoute: AuthenticatedBankIncomeRoute,
   AuthenticatedCreateExpenseRoute: AuthenticatedCreateExpenseRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDataRoute: AuthenticatedDataRoute,
   AuthenticatedExpensesRoute: AuthenticatedExpensesRoute,
   AuthenticatedIncomeRoute: AuthenticatedIncomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
@@ -322,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/bank-income': typeof AuthenticatedBankIncomeRoute
   '/create-expense': typeof AuthenticatedCreateExpenseRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/data': typeof AuthenticatedDataRoute
   '/expenses': typeof AuthenticatedExpensesRoute
   '/income': typeof AuthenticatedIncomeRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -341,6 +358,7 @@ export interface FileRoutesByTo {
   '/bank-income': typeof AuthenticatedBankIncomeRoute
   '/create-expense': typeof AuthenticatedCreateExpenseRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/data': typeof AuthenticatedDataRoute
   '/expenses': typeof AuthenticatedExpensesRoute
   '/income': typeof AuthenticatedIncomeRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -362,6 +380,7 @@ export interface FileRoutesById {
   '/_authenticated/bank-income': typeof AuthenticatedBankIncomeRoute
   '/_authenticated/create-expense': typeof AuthenticatedCreateExpenseRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/data': typeof AuthenticatedDataRoute
   '/_authenticated/expenses': typeof AuthenticatedExpensesRoute
   '/_authenticated/income': typeof AuthenticatedIncomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
@@ -383,6 +402,7 @@ export interface FileRouteTypes {
     | '/bank-income'
     | '/create-expense'
     | '/dashboard'
+    | '/data'
     | '/expenses'
     | '/income'
     | '/profile'
@@ -401,6 +421,7 @@ export interface FileRouteTypes {
     | '/bank-income'
     | '/create-expense'
     | '/dashboard'
+    | '/data'
     | '/expenses'
     | '/income'
     | '/profile'
@@ -420,6 +441,7 @@ export interface FileRouteTypes {
     | '/_authenticated/bank-income'
     | '/_authenticated/create-expense'
     | '/_authenticated/dashboard'
+    | '/_authenticated/data'
     | '/_authenticated/expenses'
     | '/_authenticated/income'
     | '/_authenticated/profile'
@@ -470,6 +492,7 @@ export const routeTree = rootRoute
         "/_authenticated/bank-income",
         "/_authenticated/create-expense",
         "/_authenticated/dashboard",
+        "/_authenticated/data",
         "/_authenticated/expenses",
         "/_authenticated/income",
         "/_authenticated/profile",
@@ -498,6 +521,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/dashboard": {
       "filePath": "_authenticated/dashboard.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/data": {
+      "filePath": "_authenticated/data.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/expenses": {
