@@ -16,6 +16,8 @@ function CreateExpensePage() {
     date: new Date().toISOString(),
     location: "",
     category: "",
+    subCategory: "",
+    comment: "",
     amount: "0"
   }
 

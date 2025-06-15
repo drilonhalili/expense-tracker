@@ -29,6 +29,8 @@ export function EditExpenseForm({
         date: expense.date,
         location: expense.location,
         category: expense.category,
+        subCategory: expense.subCategory ?? "",
+        comment: expense.comment ?? "",
         amount: expense.amount
       }}
       onSubmit={handleSubmit}

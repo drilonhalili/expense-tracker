@@ -157,6 +157,8 @@ function Expenses() {
             <TableHead>Date</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Category</TableHead>
+            <TableHead>Subcategory</TableHead> {/* NEW */}
+            <TableHead>Comment</TableHead>     {/* NEW */}
             <TableHead className="text-right">Amount</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -187,6 +189,8 @@ function Expenses() {
                     {locationLabels[expense.location] || expense.location}
                   </TableCell>
                   <TableCell>{expense.category}</TableCell>
+                  <TableCell>{expense.subCategory}</TableCell> {/* NEW */}
+                  <TableCell>{expense.comment}</TableCell>     {/* NEW */}
                   <TableCell className="text-right">{expense.amount}</TableCell>
                   <TableCell className="text-right">
                     <ExpenseActionsMenu

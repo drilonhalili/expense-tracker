@@ -139,6 +139,42 @@ export function ExpenseForm({
       />
 
       <form.Field
+        name="subCategory"
+        children={field => (
+          <div>
+            <Label htmlFor={field.name}>Subcategory</Label>
+            <Input
+              id={field.name}
+              name={field.name}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={e => field.handleChange(e.target.value)}
+              placeholder="Enter subcategory"
+            />
+            <FieldInfo field={field} />
+          </div>
+        )}
+      />
+
+      <form.Field
+        name="comment"
+        children={field => (
+          <div>
+            <Label htmlFor={field.name}>Comment</Label>
+            <Input
+              id={field.name}
+              name={field.name}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={e => field.handleChange(e.target.value)}
+              placeholder="Add a comment"
+            />
+            <FieldInfo field={field} />
+          </div>
+        )}
+      />
+
+      <form.Field
         name="amount"
         validators={{
           onChange: ({ value }) => {

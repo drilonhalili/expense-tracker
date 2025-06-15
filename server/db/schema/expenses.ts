@@ -18,6 +18,8 @@ export const expenses = pgTable(
     date: date("date").notNull(),
     location: text("location").notNull(),
     category: text("title").notNull(),
+    subCategory: text("sub_category"), // <-- NEW
+    comment: text("comment"),          // <-- NEW
     amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
     created_at: timestamp().defaultNow().notNull()
   },
@@ -40,6 +42,8 @@ export const insertExpensesSchema = createInsertSchema(expenses, {
   category: z
     .string()
     .min(3, { message: "Category must be at least 3 characters" }),
+  subCategory: z.string().optional(), // <-- NEW
+  comment: z.string().max(255).optional(), // <-- NEW
   amount: z.string().regex(/^\d+(\.\d{1,2})?$/, {message: "Amount must be a valid monetary value"})
 });
 
